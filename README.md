@@ -1,14 +1,69 @@
-# SEC Football Weekly News Automation
+# 🏈 Weekly SEC Football Summary Automation
 
 ## Overview
 
-This project is a small Python automation that collects SEC college football news from a public SEC Sports API endpoint, filters articles from the last 7 days, formats them into a readable summary, and sends a weekly email report.
+📌 Overview
 
-The goal of this project is to practice working with external APIs, time-based data filtering, basic automation pipelines, and email delivery. It simulates a lightweight backend workflow that could later be expanded into a larger news aggregation or notification system.
+This project:
+- Collects SEC football news articles
+- Extracts article content
+- Generates a structured weekly summary using the OpenAI API
+- Sends the summary via email
+- Runs automatically every week using GitHub Actions
 
 ---
 
-## What This Project Demonstrates
+## Architecture
+
+News API → Article Extraction → AI Summary → Email Delivery
+                              ↓
+                      GitHub Actions (Scheduled)
+
+### Core Components
+
+| File | Purpose |
+|------|---------|
+| `main.py` | Orchestrates the pipeline |
+| `fetch_news.py` | Retrieves SEC-related articles |
+| `generate_summary.py` | Calls OpenAI API for summary |
+| `send_email.py` | Sends formatted email |
+| `config.py` | Centralized environment variable loader |
+| `requirements.txt` | Python dependencies |
+| `.github/workflows/weekly.yml` | Automation workflow |
+
+---
+
+## 🔐 Environment Variables
+
+The project uses repository secrets for security.
+
+### Required Secrets
+
+Store these as GitHub Actions Secrets:
+
+- `OPENAI_API_KEY`
+- `SERPER_API_KEY`
+- `EMAIL_ADDRESS`
+- `EMAIL_PASSWORD`
+- `RECIPIENT_EMAIL`
+
+## 🤖 Automation
+
+The workflow is defined in:
+`.github/workflows/weekly.yml`
+
+### Schedule
+
+Runs every monday at 13:: UTC using cron syntax:
+`0 13 * * 1
+`
+The workflow:
+1. Spins up Ubuntu runner
+2. Checks out repository
+3. Installs Python 3.11
+4. Installs dependencies
+5. Injects secrets
+6. Executes main.py
 
 - Making HTTP requests to a third-party API
 - Parsing structured JSON data
@@ -21,25 +76,18 @@ This project focuses on building a reliable end-to-end script rather than advanc
 
 ---
 
-## Tech Stack
+## 🧠 Tech Stack
 
-### **Language**
-- Python 3.10+
-
-### **Libraries**
-- requests - API documentation
-- datetime - timestamp parsing and comparison
-- smtplib - email sending
-- python-dotenv - environment configuration
-
-### Tools
-- GitHub Actions or cron
+- Python 3.11
+- OpenAI API
+- Serper API
+- SMTP
+- GitHub Actions
 
 ---
 
 ## Learning Context
-This project was built to explore practical automation patterns
-- Integrating APIs
-- processing structured data
-- building small repetable workflows
+
+1. End-to-end automation design - Built a fully automated pipeline integrating APIs, data processing, and scheduled execution without relying on a local machine.
+2. Secure configuration management - Implemented environment variable handling and github secrets to prevent credential exposure and enable safe CI/CD deployment.
 
