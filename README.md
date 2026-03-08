@@ -2,92 +2,92 @@
 
 ## Overview
 
-📌 Overview
+This project is an automated pipeline that collects the latest SEC football news, extracts article content, generates a weekly summary using the OpenAI API, and sends the digest via email.
 
-This project:
-- Collects SEC football news articles
-- Extracts article content
-- Generates a structured weekly summary using the OpenAI API
-- Sends the summary via email
-- Runs automatically every week using GitHub Actions
+The entire workflow runs automatically every week using GitHub Actions.
 
 ---
 
-## Architecture
+## Pipeline Architecture
 
 News API → Article Extraction → AI Summary → Email Delivery
-                              ↓
-                      GitHub Actions (Scheduled)
-
-### Core Components
-
-| File | Purpose |
-|------|---------|
-| `main.py` | Orchestrates the pipeline |
-| `fetch_news.py` | Retrieves SEC-related articles |
-| `generate_summary.py` | Calls OpenAI API for summary |
-| `send_email.py` | Sends formatted email |
-| `config.py` | Centralized environment variable loader |
-| `requirements.txt` | Python dependencies |
-| `.github/workflows/weekly.yml` | Automation workflow |
+↓
+GitHub Actions (Scheduler)
 
 ---
 
-## 🔐 Environment Variables
+## Project Structure
 
-The project uses repository secrets for security.
+| File                           | Purpose                              |
+| ------------------------------ | ------------------------------------ |
+| `main.py`                      | Orchestrates the entire workflow     |
+| `fetch_news.py`                | Retrieves SEC football articles      |
+| `generate_summary.py`          | Generates summaries using OpenAI API |
+| `send_email.py`                | Sends the formatted email report     |
+| `config.py`                    | Loads environment variables          |
+| `requirements.txt`             | Python dependencies                  |
+| `.github/workflows/weekly.yml` | Scheduled GitHub Actions workflow    |
 
-### Required Secrets
+---
 
-Store these as GitHub Actions Secrets:
-
-- `OPENAI_API_KEY`
-- `SERPER_API_KEY`
-- `EMAIL_ADDRESS`
-- `EMAIL_PASSWORD`
-- `RECIPIENT_EMAIL`
-
-## 🤖 Automation
+## Automation
 
 The workflow is defined in:
+
 `.github/workflows/weekly.yml`
 
-### Schedule
+The pipeline runs **every Monday at 13:00 UTC** using cron scheduling:
 
-Runs every monday at 13:: UTC using cron syntax:
-`0 13 * * 1
-`
-The workflow:
-1. Spins up Ubuntu runner
-2. Checks out repository
+```
+0 13 * * 1
+```
+
+GitHub Actions performs the following steps:
+
+1. Launches an Ubuntu runner
+2. Checks out the repository
 3. Installs Python 3.11
-4. Installs dependencies
-5. Injects secrets
-6. Executes main.py
-
-- Making HTTP requests to a third-party API
-- Parsing structured JSON data
-- Time-window filtering using timestamps
-- Formatting programmatic reports
-- Automated email delivery
-- Basic workflow pipeline design
-
-This project focuses on building a reliable end-to-end script rather than advanced architecture.
+4. Installs project dependencies
+5. Injects environment secrets
+6. Executes the automation pipeline (`main.py`)
 
 ---
 
-## 🧠 Tech Stack
+## Environment Variables
 
-- Python 3.11
-- OpenAI API
-- Serper API
-- SMTP
-- GitHub Actions
+The project uses **GitHub Actions Secrets** for secure configuration.
+
+Required secrets:
+
+* `OPENAI_API_KEY`
+* `SERPER_API_KEY`
+* `EMAIL_ADDRESS`
+* `EMAIL_PASSWORD`
+* `RECIPIENT_EMAIL`
+
+---
+
+## Tech Stack
+
+* Python 3.11
+* OpenAI API
+* Serper News API
+* SMTP (Email delivery)
+* GitHub Actions (Workflow automation)
+
+---
+
+## Key Engineering Concepts
+
+* API integration
+* JSON data processing
+* Time-based filtering
+* Automated reporting
+* Scheduled workflow automation
+* Secure configuration using GitHub Secrets
 
 ---
 
 ## Learning Context
 
-1. End-to-end automation design - Built a fully automated pipeline integrating APIs, data processing, and scheduled execution without relying on a local machine.
-2. Secure configuration management - Implemented environment variable handling and github secrets to prevent credential exposure and enable safe CI/CD deployment.
-
+This project demonstrates how to build a reliable end-to-end automation pipeline that integrates APIs, processes data, and runs on a scheduled cloud workflow without requiring a local machine.
